@@ -3,17 +3,28 @@
 #include <lvgl.h>
 #include "ui/ui.h"
 #include <Wire.h>
+#include <Adafruit_MPRLS.h>
+#include <Adafruit_NeoPixel.h>
+#include "lib/edge.h"
+
+
+
 
 // Set up UI Constants
 const int displayHorizonal = 320;
 const int displayVertical = 240;
 
 unsigned long currentTime;
+unsigned long bootTime = 0;
 
 // Initialize Display stuff
 lv_display_t *display;
 lv_indev_t *indev;
 static lv_draw_buf_t *draw_buf1;
+
+#define RESET_PIN  -1  // set to any GPIO pin # to hard-reset on begin()
+#define EOC_PIN    -1  // set to any GPIO pin to read end-of-conversion by pin
+auto mpr = Adafruit_MPRLS(RESET_PIN, EOC_PIN);
 
 // Display flushing
 void my_disp_flush(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map) {
@@ -70,6 +81,7 @@ void setup() {
     Serial.begin(115200);
     auto cfg = M5.config();
     M5.begin(cfg);
+    Wire.begin();
     Serial.println("Startup");
      /* Pin config, none of these are used at the moment
     pinMode(remoteUserPin, INPUT);
@@ -93,14 +105,24 @@ void setup() {
     lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
     lv_indev_set_read_cb(indev, my_touchpad_read);
     ui_init();
+    if (! mpr.begin()) {
+        Serial.println("Failed to communicate with MPRLS sensor, check wiring?");
+        while (1) {
+            delay(10);
+        }
+    }
     Serial.println("Initialization complete");
+    bootTime = millis();
 
 }
 
 void loop() {
     M5.update();
     lv_task_handler();
+    // Need to read the pressure sensor, we'll break this out later to create a nice event loop
+    float pressure_hPa = mpr.readPressure();
+    Serial.print("Pressure (hPa): "); Serial.println(pressure_hPa);
+    lv_label_set_text_fmt(objects.lbl_pressureVal, "%.2f", pressure_hPa);
     currentTime = millis();
-    Serial.println("test");
-    delay(5);
+    delay(1000);
 }

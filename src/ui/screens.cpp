@@ -9,6 +9,7 @@
 #include "styles.h"
 #include "ui.h"
 
+
 #include <string.h>
 
 objects_t objects;
@@ -23,7 +24,6 @@ static void on_arc_motorSpd_changed(lv_event_t *e) {
         lv_obj_t *target = static_cast<lv_obj_t*>(lv_event_get_target(e));
         int16_t value = lv_arc_get_value(target);
         motorSpeed = value;
-        Serial.println("test");
         Serial.println(value);
     }
 }
@@ -39,8 +39,8 @@ void create_screen_main() {
             // arcMotorSpd
             lv_obj_t *obj = lv_arc_create(parent_obj);
             objects.arc_motor_spd = obj;
-            lv_obj_set_pos(obj, 99, 84);
-            lv_obj_set_size(obj, 85, 84);
+            lv_obj_set_pos(obj, 169, 106);
+            lv_obj_set_size(obj, 119, 112);
             lv_arc_set_value(obj, 25);
             lv_obj_add_event_cb(obj, on_arc_motorSpd_changed, LV_EVENT_VALUE_CHANGED, NULL);
         }
@@ -48,7 +48,7 @@ void create_screen_main() {
             // lblArousal
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.lbl_arousal = obj;
-            lv_obj_set_pos(obj, 22, 67);
+            lv_obj_set_pos(obj, 53, 84);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_label_set_text(obj, "Arousal");
         }
@@ -56,7 +56,7 @@ void create_screen_main() {
             // lblMotorSpeed
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.lbl_motor_speed = obj;
-            lv_obj_set_pos(obj, 99, 67);
+            lv_obj_set_pos(obj, 182, 84);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_label_set_text(obj, "Motor Speed");
         }
@@ -64,20 +64,20 @@ void create_screen_main() {
             // arcArousal
             lv_obj_t *obj = lv_arc_create(parent_obj);
             objects.arc_arousal = obj;
-            lv_obj_set_pos(obj, 6, 84);
-            lv_obj_set_size(obj, 85, 84);
+            lv_obj_set_pos(obj, 22, 106);
+            lv_obj_set_size(obj, 115, 112);
             lv_arc_set_value(obj, 25);
         }
         {
             // pnlDenied
             lv_obj_t *obj = lv_obj_create(parent_obj);
             objects.pnl_denied = obj;
-            lv_obj_set_pos(obj, 232, 15);
+            lv_obj_set_pos(obj, 121, 16);
             lv_obj_set_size(obj, 78, 52);
         }
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
-            lv_obj_set_pos(obj, 244, 0);
+            lv_obj_set_pos(obj, 133, 0);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_label_set_text(obj, "Denied");
         }
@@ -85,9 +85,46 @@ void create_screen_main() {
             // lblDeniedVal
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.lbl_denied_val = obj;
-            lv_obj_set_pos(obj, 257, 33);
+            lv_obj_set_pos(obj, 0, -78);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-            lv_label_set_text(obj, "");
+            lv_obj_set_style_align(obj, LV_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "0");
+        }
+        {
+            // lblRunState
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.lbl_run_state = obj;
+            lv_obj_set_pos(obj, 0, 102);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_style_align(obj, LV_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "Off");
+        }
+        {
+            // pnlPressure
+            lv_obj_t *obj = lv_obj_create(parent_obj);
+            objects.pnl_pressure = obj;
+            lv_obj_set_pos(obj, 209, 16);
+            lv_obj_set_size(obj, 79, 52);
+        }
+        {
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            lv_obj_set_pos(obj, 217, 0);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text(obj, "Pressure");
+        }
+        {
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            lv_obj_set_pos(obj, 288, 34);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text(obj, "hPa");
+        }
+        {
+            // lblPressure
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.lbl_pressureVal = obj;
+            lv_obj_set_pos(obj, 235, 34);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text(obj, "0");
         }
     }
     

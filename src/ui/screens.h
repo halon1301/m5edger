@@ -15,6 +15,9 @@ typedef struct _objects_t {
     lv_obj_t *arc_arousal;
     lv_obj_t *pnl_denied;
     lv_obj_t *lbl_denied_val;
+    lv_obj_t *lbl_run_state;
+    lv_obj_t *pnl_pressure;
+    lv_obj_t *lbl_pressureVal;
 } objects_t;
 
 extern objects_t objects;
